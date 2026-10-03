@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+    <h1>Leave a message</h1>
+    <p class="subtitle">Share something with the community</p>
+
+    <form method="POST" action="/">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required maxlength="40" placeholder="Your name">
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required maxlength="500" rows="3" placeholder="Write your message..."></textarea>
+
+        <button type="submit" class="btn">Post</button>
+    </form>
+</section>
+
+<section class="card">
+    <h2>Recent messages</h2>
+
+    {% if messages %}
+        <div class="messages">
+            {% for m in messages %}
+            <div class="message">
+                <div class="message-header">
+                    <strong>{{ m.name | safe }}</strong>
+                    <form method="POST" action="{{ url_for('report', msg_id=m.id) }}" class="report-form">
+                        <button type="submit" class="report-btn" title="Report this message">Report</button>
+                    </form>
+                </div>
+                <div class="message-body">{{ m.message | safe }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty">No messages yet. Be the first to post!</p>
+    {% endif %}
+</section>
+{% endblock %}
